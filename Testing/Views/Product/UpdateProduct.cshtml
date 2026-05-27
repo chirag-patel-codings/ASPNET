@@ -1,0 +1,90 @@
+﻿@model Product;
+
+<h2>Update: @Model.Name</h2>
+
+@using (Html.BeginForm("SaveProduct", "Product", FormMethod.Post, new { id = "updateProductForm" }))
+{
+    <input asp-for="ProductID" type="hidden" value="@Model.ProductID" />
+
+    
+    <!-- FOR MANUAL JAVASCRIPT VALIDATION -->
+    <div class="text-danger" id="validationErrors"></div>
+
+    <!-- 
+            CLIENT SIDE AUTOMATIC VALIDATION: 
+            The UL will be generated here automatically by the scripts in case of any validation errors on the client side before form submission!!!
+            Also works when JavaScript is disabled the for site!!!
+    -->
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @* 'ModelState' ERRORS as 'ValidationSummary' (InCase JavaScript is disabled!!!) 
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="text-danger" id="validationErrors">
+            <strong>Please correct the following errors:</strong>
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        </div>
+    }
+    *@
+
+    <label asp-for="Name" class="control-label">Name:</label>
+    <input type="text" name="Name" id="Name" data-val="true" data-val-required="Product Name is required!!!" class="form-control" value="@Model.Name" />
+    @*
+        'ModelState' ERRORS Display Next to the Control.
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    *@
+    <br />
+    <label asp-for="Price" class="control-label">Price:</label>
+    <input type="number" step="0.01" name="Price" id="Price" data-val="true" data-val-required="Product Price is required!!!" class="form-control" value="@Model.Price" />
+    @* 
+        'ModelState' ERRORS Display Next to the Control.
+        @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" }) 
+    *@
+    <br />
+    <br />
+    <input type="submit" id="submit" value="Update Product" class="btn btn-primary" />
+
+}
+
+@* AUTOMATIC VALIDATION ON CLIENT SIDE USING jQuery by asp.net mvc core framework!!! *@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@*
+
+<!--
+    THE BELOW SCRIPTS WORK AS EXPECTED, BUT COMMENTED OUT TO TEST AUTOMATIC FUNCTIONALITY OF ASP.NET CORE FRAMEWORK FOR CLIENT SIDE VALIDATIONS.
+    It is rendered by @RenderSection("Scripts", required: false) of the '_Layout.cshtml'.
+-->
+@section Scripts {
+    <script>
+        document.getElementById("updateProductForm").addEventListener("submit", function() {
+
+            let name = document.getElementById('Name');
+            let price = document.getElementById('Price');
+            let validationErrors = document.getElementById('validationErrors');
+            let errorMessage = '';
+
+            if (name.value.trim() == '') {
+                errorMessage = 'Please enter the Product Name!!!\n';
+            }
+
+            if (price.value.trim() == '') {
+                errorMessage += 'Please enter the Product Price!!!\n';
+            }
+
+            if (errorMessage != '') {
+                validationErrors.innerText = errorMessage;
+                event.preventDefault();
+            }
+            else
+            {
+                validationErrors.innerText='';
+            }
+        });
+    </script>
+ }
+ *@

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -19,10 +20,17 @@ namespace Testing.Services.ProductRepository
             return _conn.Query<Product>("SELECT * FROM Products"); ;
         }
 
-        public Product GetProduct(int productID)
+        public Product? GetProduct(int productID)
         {
             
-            return _conn.QuerySingle<Product>("SELECT * FROM Products WHERE ProductID = @id", new {id = productID});
+            Product? product = _conn.QuerySingleOrDefault<Product>("SELECT * FROM Products WHERE ProductID = @id", new { id = productID });
+            return product;
+        }
+
+        void IProductRepository.UpdateProduct(Product product)
+        {
+            _conn.Execute("UPDATE Products SET Name = @name, Price = @price WHERE ProductID = @id;", 
+                new { id = product.ProductID, name = product.Name, price = product.Price });
         }
     }
 }

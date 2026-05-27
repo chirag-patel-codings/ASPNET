@@ -10,6 +10,7 @@
         <th>Category ID</th>
         <th>On Sale</th>
         <th>Stock Level</th>
+        <th></th>
     </tr>
     @foreach (var product in @Model)
     {
@@ -20,6 +21,7 @@
             <td>@product.CategoryID</td>
             <td>@product.OnSale</td>
             <td>@product.StockLevel</td>
+            <td><a href="/Product/UpdateProduct/@product.ProductID">UPDATE</a></td>
         </tr>
     }
 </table>
