@@ -1,0 +1,39 @@
+﻿@model Product;
+
+<h2>Create a New Product</h2>
+
+@using (Html.BeginForm("CreateProduct", "Product", "Post"))
+{
+    <input asp-for="ProductID" type="hidden" value="" />
+    
+    <!-- 
+        CLIENT SIDE AUTOMATIC VALIDATION:
+    -->
+    <div asp-validation-summary="All" class="text-danger"></div>
+    
+    <label for="Name" class="control-label">Name</label>
+    <input asp-for="Name" type="text" name="Name" data-val="true" data-val-required="Product Name is required!!!" class="form-control" value="@Model.Name" />
+
+    <label for="Price" class="control-label">Price</label>
+    <input type="number" asp-for="Price" step="0.01" name="Price" data-val="true" data-val-required="Product Price is required!!!" class="form-control" value="@Model.Price" />
+
+    <div class="form-group">
+        <label for="CategoryID">Select a Category</label>
+        <select name="CategoryID" asp-for="CategoryID" data-val="true" data-val-required="Product Category is required!!!" data-val-number="" class="form-control">
+            <option value="">-- Select a Category --</option>  @* Required to show the errormessage of the [Required] Attribute...  *@
+            @foreach (var cat in Model.Categories)
+            {
+                <option value="@cat.CategoryID">@cat.CategoryID - @cat.Name</option>
+            }
+        </select>
+    </div>
+    
+    <input type="submit" value="Create Product" class="btn btn-primary" />
+}
+
+@* AUTOMATIC VALIDATION ON CLIENT SIDE USING jQuery by asp.net mvc core framework!!! *@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

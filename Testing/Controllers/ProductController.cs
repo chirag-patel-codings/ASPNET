@@ -52,7 +52,8 @@ namespace Testing.Controllers
             
         }
 
-        // Displays the Product details in the "UpdateProduct" that can be modified by the user, if product details found in the database otherwise navigates to the "Errors" View with error details.
+        // Displays the Product details in the "UpdateProduct" that can be modified by the user, if product details found in the database otherwise
+        // navigates to the "Errors" View with error details.
         public IActionResult UpdateProduct(string id)
         {
 
@@ -70,7 +71,9 @@ namespace Testing.Controllers
 
         }
 
-        // Saves the Product details to the database and returns to the "ViewProduct" if no validation errors otherwise returns to the "UpdateProduct" View with errors.
+        // Saves the Product details to the database and returns to the "ViewProduct" if no validation errors otherwise
+        // returns to the "UpdateProduct" View with errors.
+        [HttpPost]
         public IActionResult SaveProduct(Product product)
         {
             if (ModelState.IsValid)
@@ -86,9 +89,41 @@ namespace Testing.Controllers
             
         }
 
+        public IActionResult CreateProduct()
+        {
+            Product product = new Product();
+            product.Categories = _repo.Categories;
+            
+            return View("CreateProduct", product);
+        }
+        
+        [HttpPost]
+        public IActionResult CreateProduct(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                product.Name = product.Name.Trim();
+                _repo.InsertProduct(product);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                product.Categories = _repo.Categories;
+                return View("CreateProduct", product);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProduct(int productId)
+        {
+            _repo.DeleteProduct(productId);
+            return RedirectToAction("Index");
+        }
+        
         /// <summary>
         /// This function returns the Product details by it's supplied 'id' if no errors in this function and Retruns 'null' for the 'string' argument.
-        /// Incase of any errors (like productid parsing, or product details not found in database), it returns the 'null' for its Product parameter and Error Details for it's string argument.
+        /// Incase of any errors (like productid parsing, or product details not found in database), it returns the 'null' for its Product parameter and
+        /// Error Details for it's string argument.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -101,7 +136,6 @@ namespace Testing.Controllers
             {
                 productID = int.Parse(id);
                 product = _repo.GetProduct(productID);
-
             }
             catch (Exception ex)
             {
