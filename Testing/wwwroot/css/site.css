@@ -69,3 +69,11 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+/* My Customly added:  Highlights the input field border in red */
+.input-validation-error {
+  border: 2px solid #dc3545 !important; /* Bootstrap's danger red */
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+  background-color: #fff8f8; /* Optional: adds a subtle red tint */
+}

@@ -13,7 +13,8 @@ namespace Testing.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _repo;
-
+        
+        // Constructor function that does "Inversion of Control" for 'IProductRepository'.
         public ProductController(IProductRepository repo)
         {
             this._repo = repo;
@@ -89,6 +90,10 @@ namespace Testing.Controllers
             
         }
 
+        /// <summary>
+        /// Displays a Create Product Page with empty product details.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult CreateProduct()
         {
             Product product = new Product();
@@ -97,6 +102,12 @@ namespace Testing.Controllers
             return View("CreateProduct", product);
         }
         
+        /// <summary>
+        /// Creates a new product by saving it to the database (if no validation error). If any validation error(s), it will return to the "CreateProduct"
+        /// view with existing user supplied details.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult CreateProduct(Product product)
         {

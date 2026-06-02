@@ -50,7 +50,7 @@ namespace Testing.Services.ProductRepository
 
         public void DeleteProduct(int productID)
         {
-            string sql = "DELETE FROM reviews WHERE ProductID = @id; DELETE FROM sales WHERE ProductID = @id; DELETE FROM products WHERE ProductID = @id";
+            string sql = "DELETE FROM reviews WHERE ProductID = @id; DELETE FROM sales WHERE ProductID = @id; DELETE FROM products WHERE ProductID = @id;";
             _conn.Execute(sql, new { id = productID });
         }
         

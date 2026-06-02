@@ -22,6 +22,11 @@
 
 </table>
 
-<div style="display: block">
-    <a href="/Product/UpdateProduct/@Model.ProductID">Update Product</a>
+<div>
+    <a href="/Product/UpdateProduct/@Model.ProductID" class="btn btn-link text-primary border-primary" style="display: inline-block; vertical-align: center;" >Update Product</a>
+    @using (Html.BeginForm ("DeleteProduct", "Product", FormMethod.Post, new { id = "deleteProductForm" + @Model.ProductID, style="display: inline-block; vertical-align: center;"  }))
+    {
+         @Html.Hidden("productId", @Model.ProductID)
+         <input type="submit" id="delete-@Model.ProductID" value="DELETE PRODUCT" class="btn btn-link text-danger border-danger" onclick="return confirm('Are you sure you want to delete the product with Product ID: \n' + @Model.ProductID + '?');" />
+    }
 </div>
